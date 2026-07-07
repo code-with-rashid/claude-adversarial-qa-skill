@@ -26,24 +26,43 @@ methodology.
 
 ## Install
 
-Skills are just a folder with a `SKILL.md`. Copy `skills/adversarial-qa/` into
-either:
+This isn't a package — it's a folder with a `SKILL.md`. **Clone this repo first**,
+then copy `skills/adversarial-qa/` into a `.claude/skills/` directory. (The commands
+below assume you have *not* already `cd`'d into a checkout of this repo — if you
+have, skip the `git clone` line and use `skills/adversarial-qa` as the source path.)
 
-**Per-project** (recommended — keeps `qa/` state alongside the repo it hardens):
+### macOS / Linux (bash/zsh)
 
 ```bash
+git clone https://github.com/code-with-rashid/claude-adversarial-qa-skill.git ~/claude-adversarial-qa-skill
+
+# per-project (recommended — keeps qa/ state alongside the repo it hardens)
 mkdir -p /path/to/your-repo/.claude/skills
-cp -r skills/adversarial-qa /path/to/your-repo/.claude/skills/
-```
+cp -r ~/claude-adversarial-qa-skill/skills/adversarial-qa /path/to/your-repo/.claude/skills/
 
-**Per-user** (available in every project):
-
-```bash
+# per-user (available in every project, instead of per-project)
 mkdir -p ~/.claude/skills
-cp -r skills/adversarial-qa ~/.claude/skills/
+cp -r ~/claude-adversarial-qa-skill/skills/adversarial-qa ~/.claude/skills/
 ```
 
-No build step, no dependencies — it's markdown.
+### Windows (PowerShell)
+
+```powershell
+git clone https://github.com/code-with-rashid/claude-adversarial-qa-skill.git $HOME\claude-adversarial-qa-skill
+
+# per-project
+New-Item -ItemType Directory -Force -Path "C:\path\to\your-repo\.claude\skills" | Out-Null
+Copy-Item -Recurse -Force "$HOME\claude-adversarial-qa-skill\skills\adversarial-qa" "C:\path\to\your-repo\.claude\skills\"
+
+# per-user
+New-Item -ItemType Directory -Force -Path "$HOME\.claude\skills" | Out-Null
+Copy-Item -Recurse -Force "$HOME\claude-adversarial-qa-skill\skills\adversarial-qa" "$HOME\.claude\skills\"
+```
+
+No build step, no dependencies — it's markdown. Only the copied
+`skills/adversarial-qa` folder matters; the rest of the clone (this README, the
+license) can be deleted afterward, or kept around so `git pull` can fetch future
+updates to the skill before you re-copy it.
 
 ## Use
 
