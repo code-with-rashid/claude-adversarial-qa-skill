@@ -1,0 +1,10 @@
+{
+  "seeds": [
+    {
+      "id": "seed-0001",
+      "purpose": "<fuzz-target:name | property-test:name> initial corpus seed",
+      "value": "<literal seed value, or path under qa/corpus/>",
+      "cycle": 0
+    }
+  ]
+}

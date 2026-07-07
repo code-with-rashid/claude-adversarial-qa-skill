@@ -1,0 +1,33 @@
+{
+  "updated": "<ISO date — stamp after each recompute, not via Date.now() inside orchestration scripts>",
+  "cycle": 0,
+  "thresholds": {
+    "line_pct": 90,
+    "branch_pct": 85,
+    "mutation_pct": 80,
+    "fuzz_execs_per_target": 1000000,
+    "fuzz_minutes_per_target": 30,
+    "soak_hours": 1
+  },
+  "current": {
+    "line_pct": null,
+    "branch_pct": null,
+    "mutation_pct": null
+  },
+  "fuzz_targets": {
+    "<target-name>": {
+      "execs": 0,
+      "minutes": 0,
+      "new_crashes_last_run": null,
+      "corpus_path": "qa/corpus/<target-name>/"
+    }
+  },
+  "nonfunctional": {
+    "applicable": null,
+    "load_meets_slo": null,
+    "stress_degrades_gracefully": null,
+    "soak_leak_free": null
+  },
+  "inventory_done_count": 0,
+  "inventory_total_count": 0
+}
