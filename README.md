@@ -35,8 +35,10 @@ Inside a Claude Code session, in any project:
 /plugin install adversarial-qa@claude-adversarial-qa-skill
 ```
 
-That's it — two commands, no shell, works the same on macOS/Linux/Windows. Confirm
-with `/plugin list`, or `claude plugin list` from a regular terminal.
+Then run `/reload-plugins` (or start a fresh `claude` session) — a plugin installed
+mid-session doesn't retroactively load into that session's context, so the skill
+won't be visible yet, and "harden this codebase" won't trigger it, until you do.
+Confirm with `/plugin list`, or `claude plugin list` from a regular terminal.
 
 By default this installs at **user scope** (available in every project). To scope it
 to just the current project instead, run the equivalent from a terminal:
@@ -126,6 +128,23 @@ It then writes `qa/CONFIG.md`, builds `qa/INVENTORY.md`, and starts the loop. On
 later run in the same repo, it reads the persisted state and resumes at the
 frontier — a well-converged repo should see the next run exit almost immediately,
 having found nothing new.
+
+### If natural-language phrases like "harden this codebase" don't trigger it
+
+Skill auto-invocation is Claude deciding your request matches a skill's
+description — it's a judgment call, not a guarantee, and it competes with every
+other skill you have installed. Two things to check if it doesn't fire:
+
+1. **Did you just install it?** A plugin installed mid-session doesn't
+   retroactively load into that session — run `/reload-plugins` or start a fresh
+   session first (see the reload note under [Install](#recommended-as-a-plugin)).
+2. **Do you have a lot of other skills/plugins installed?** Skill descriptions
+   share a limited context budget, and a skill you've never invoked is the first
+   to get shortened or dropped when it overflows. Run `/doctor` to check whether
+   `adversarial-qa` is being truncated.
+
+Either way, `/adversarial-qa` (typed explicitly) always works regardless of
+auto-detection, since it's how this was actually verified end-to-end.
 
 ## What "done" looks like
 
