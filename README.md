@@ -26,12 +26,41 @@ methodology.
 
 ## Install
 
+### Recommended: as a plugin
+
+Inside a Claude Code session, in any project:
+
+```
+/plugin marketplace add code-with-rashid/claude-adversarial-qa-skill
+/plugin install adversarial-qa@claude-adversarial-qa-skill
+```
+
+That's it — two commands, no shell, works the same on macOS/Linux/Windows. Confirm
+with `/plugin list`, or `claude plugin list` from a regular terminal.
+
+By default this installs at **user scope** (available in every project). To scope it
+to just the current project instead, run the equivalent from a terminal:
+
+```bash
+claude plugin marketplace add code-with-rashid/claude-adversarial-qa-skill --scope project
+claude plugin install adversarial-qa@claude-adversarial-qa-skill --scope project
+```
+
+To remove it later: `/plugin uninstall adversarial-qa@claude-adversarial-qa-skill`.
+
+<details>
+<summary>Alternative: manual copy (no plugin system)</summary>
+
 This isn't a package — it's a folder with a `SKILL.md`. **Clone this repo first**,
 then copy `skills/adversarial-qa/` into a `.claude/skills/` directory. (The commands
 below assume you have *not* already `cd`'d into a checkout of this repo — if you
 have, skip the `git clone` line and use `skills/adversarial-qa` as the source path.)
 
-### macOS / Linux (bash/zsh)
+Use this if you'd rather not use the plugin system, or want to read/vet the skill's
+contents before trusting it in a project — a skill's instructions run with whatever
+tool access you grant it, so reviewing it first is reasonable practice either way.
+
+#### macOS / Linux (bash/zsh)
 
 ```bash
 git clone https://github.com/code-with-rashid/claude-adversarial-qa-skill.git ~/claude-adversarial-qa-skill
@@ -45,7 +74,7 @@ mkdir -p ~/.claude/skills
 cp -r ~/claude-adversarial-qa-skill/skills/adversarial-qa ~/.claude/skills/
 ```
 
-### Windows (PowerShell)
+#### Windows (PowerShell)
 
 ```powershell
 git clone https://github.com/code-with-rashid/claude-adversarial-qa-skill.git $HOME\claude-adversarial-qa-skill
@@ -64,6 +93,16 @@ No build step, no dependencies — it's markdown. Only the copied
 license) can be deleted afterward, or kept around so `git pull` can fetch future
 updates to the skill before you re-copy it.
 
+#### If you install it both ways
+
+Don't — pick one. If a project ends up with both the plugin installed *and* a manual
+copy under its own `.claude/skills/adversarial-qa/`, the project-level copy wins for
+the bare `/adversarial-qa` command (project skills take priority over plugin skills
+with the same name). The plugin is still reachable explicitly at
+`/adversarial-qa:adversarial-qa`, but having both around is confusing for no benefit.
+
+</details>
+
 ## Use
 
 Open Claude Code in the target repo and either ask for it in plain language
@@ -74,11 +113,19 @@ the payments module") or invoke it directly:
 /adversarial-qa
 ```
 
-On first run it will ask only what it can't infer from your repo (run commands,
-thresholds if you want non-default ones), write `qa/CONFIG.md`, then build
-`qa/INVENTORY.md` and start the loop. On a later run in the same repo, it reads the
-persisted state and resumes at the frontier — a well-converged repo should see the
-next run exit almost immediately, having found nothing new.
+(If you installed it as a plugin *and* separately have a manual copy in the same
+project, use `/adversarial-qa:adversarial-qa` to be explicit about which one runs —
+see [If you install it both ways](#if-you-install-it-both-ways) above.)
+
+On first run it asks only what it can't infer from your repo. In practice, that
+means it reads your manifest and test config, states the stack/tooling/thresholds
+it's going to use, and only stops to ask when something is genuinely ambiguous (for
+example, whether to scope a monorepo run to specific packages) — it does not ask
+for information already sitting in `package.json`, `pubspec.yaml`, or CI config.
+It then writes `qa/CONFIG.md`, builds `qa/INVENTORY.md`, and starts the loop. On a
+later run in the same repo, it reads the persisted state and resumes at the
+frontier — a well-converged repo should see the next run exit almost immediately,
+having found nothing new.
 
 ## What "done" looks like
 

@@ -1,0 +1,13 @@
+{
+  "name": "claude-adversarial-qa-skill",
+  "description": "A stack-agnostic Claude Code skill that drives a repo to measured, resumable test-hardening convergence.",
+  "owner": {
+    "name": "Rashid Mahmood"
+  },
+  "plugins": [
+    {
+      "name": "adversarial-qa",
+      "source": "./skills/adversarial-qa"
+    }
+  ]
+}
