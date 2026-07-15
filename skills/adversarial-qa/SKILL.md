@@ -91,6 +91,15 @@ what makes a second run cheap and non-redundant instead of a full redo.
    for the stack, no fuzz-friendly entry points, non-functional testing not
    applicable), say so in `qa/QA_LOG.md` and quantify the gap. Don't silently skip.
 
+8. **Generator ≠ approver** — the pass that builds the inventory and writes the
+   tests is optimistic by construction; it cannot also be the sole judge that the
+   inventory is complete or that a survivor is "equivalent." Every self-certified
+   judgement — inventory completeness (Phase 0.5), equivalent-mutant claims,
+   unreachable-branch claims — must be challenged by a separate adversarial pass (a
+   fresh subagent, or the same agent explicitly re-prompted to *disprove* its own
+   claim), not accepted because the author is confident. A justification counts only
+   once a skeptic briefed to break it has tried and failed.
+
 ## Phase 0 — Build the exhaustive inventory (once; this is what makes one run complete)
 
 Do not improvise a test plan. Derive it mechanically from the code so nothing is
@@ -114,6 +123,30 @@ it) and a checklist of which attack categories apply. Coverage is defined agains
 this inventory, not against mood. An item is "done" only when every applicable
 category has been exercised against it AND it sits inside the measured
 coverage/mutation thresholds.
+
+## Phase 0.5 — Adversarially review the inventory (generator ≠ approver)
+
+Coverage, mutation score, and fuzz budget are all defined *against the Phase 0
+inventory* — so an item the inventory never listed is invisible to every downstream
+metric, and the run will report "converged" while a whole class goes untested. A
+missing inventory item is the one bug this regime cannot measure its way to; it has to
+be hunted, not assumed away.
+
+Before Phase 1, run one pass whose *only* job is to prove the inventory incomplete.
+Briefed to attack rather than confirm, it asks:
+
+- **What entry point isn't listed?** Admin routes, webhooks, error/exception handlers,
+  retry & queue paths, migration/startup code, feature-flag-gated branches, cron jobs.
+- **What whole *class* of attack has no inventory item?** Concurrency & ordering
+  (races, TOCTOU, retry-idempotency, deadlocks), time & clock (timezone, DST, expiry,
+  leap seconds), encoding (unicode, injection, malformed bytes), multi-tenancy &
+  authorization (IDOR, privilege escalation, cross-tenant leakage), resource
+  exhaustion, and partial-failure / rollback paths.
+- **What invariant is assumed but never asserted?**
+
+Everything it surfaces becomes a new inventory item with a stable ID *before* attacking
+begins. Re-run this pass whenever the code changes materially. Coverage against an
+unchallenged inventory is confidence, not proof.
 
 ## Phase 1 — Instrument for objective measurement
 
@@ -179,9 +212,11 @@ You may stop only when ALL of these are simultaneously true and recorded in
 1. **Inventory complete** — every Phase 0 item has every applicable attack category
    executed against it (verified via `TRIED.jsonl`).
 2. **Coverage** — line ≥ threshold AND branch ≥ threshold. Any uncovered branch is
-   either tested or explicitly justified as unreachable in `QA_LOG.md`.
+   either tested or explicitly justified as unreachable in `QA_LOG.md`, and that
+   justification survives an independent adversarial check (rule 8).
 3. **Mutation score ≥ threshold** — remaining survivors are individually reviewed and
-   justified (equivalent mutants) in the log.
+   justified as equivalent by a *separate* adversarial pass, not the author (rule 8)
+   — an unaudited "equivalent mutant" is an inflated score.
 4. **Fuzz budget exhausted** — every fuzz/property target hit its exec/time budget
    with zero new crashes, hangs, or sanitizer findings in the final stretch, with a
    saved corpus.
