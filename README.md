@@ -1,10 +1,13 @@
-# Adversarial QA — a Claude Code skill
+# Adversarial QA — a portable Agent Skill
 
-A [Claude Code](https://claude.com/claude-code) skill that turns "run the tests and
-see if it's fine" into a **measured, resumable hardening loop**: build an exhaustive,
+A portable [Agent Skill](https://agentskills.io) — works in Claude Code, Cursor, Codex
+CLI, and any other Agent-Skills-compatible tool — that turns "run the tests and see if
+it's fine" into a **measured, resumable hardening loop**: build an exhaustive,
 code-derived test inventory, then drive coverage, mutation score, fuzzing, and (for
 services) load/soak testing to explicit numeric thresholds — persisting all state so
 a re-run picks up exactly where the last one left off instead of starting cold.
+
+Part of the [Agent Skills catalog](https://github.com/code-with-rashid/agent-skills) — browse all skills and their install steps for every tool.
 
 ## Why this exists
 
@@ -104,6 +107,13 @@ with the same name). The plugin is still reachable explicitly at
 `/adversarial-qa:adversarial-qa`, but having both around is confusing for no benefit.
 
 </details>
+
+### Other tools (Cursor, Codex CLI, ...)
+
+This skill is a standard `SKILL.md` package with no Claude-Code-only dependencies, so
+it installs the same way any Agent Skill does. See the
+[catalog's install guide](https://github.com/code-with-rashid/agent-skills#install)
+for exact steps in Cursor, Codex CLI, and other tools.
 
 ## Use
 
