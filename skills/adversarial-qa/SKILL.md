@@ -44,7 +44,7 @@ Before anything else, determine:
    - Load/stress/soak (services only): meet SLOs at peak, fail gracefully past it,
      zero resource growth over a 1h soak
 
-Use `AskUserQuestion` for anything in 1–5 that truly cannot be inferred from the repo
+Ask the user directly for anything in 1–5 that truly cannot be inferred from the repo
 — do not guess run commands or thresholds silently, and do not ask about things you
 can determine yourself by reading the manifest/CI config. Persist the resolved target
 and thresholds to `qa/CONFIG.md` (see `templates/CONFIG.md`) so a resumed run never
@@ -264,15 +264,17 @@ and exits almost immediately. That is the goal.
 - **CI recommendations**: which coverage + mutation + fuzz gates to enforce so
   regressions can't reintroduce what was fixed.
 
-## Operating notes for Claude Code
+## Operating notes
 
-- Run test/coverage/mutation/fuzz commands via the shell tool directly; don't
-  hand-wave numbers — read them from actual tool output.
-- For a long run, track Phase 0 inventory items as tasks so progress survives context
-  compaction across a long session.
+- Run test/coverage/mutation/fuzz commands via your shell/terminal tool directly;
+  don't hand-wave numbers — read them from actual tool output.
+- For a long run, keep Phase 0 inventory progress durable (a task list if the host
+  tool has one; otherwise the persisted `qa/` state files already serve this
+  purpose) so progress survives a long or interrupted session.
 - Independent fuzz targets or independent inventory items are good candidates for
-  parallel subagents — but only fan out into multi-agent orchestration if the user
-  has actually opted into it; otherwise work the frontier sequentially.
+  parallelization if the host tool supports running sub-agents/workers — but only
+  fan out into multi-agent orchestration if the user has actually opted into it;
+  otherwise work the frontier sequentially.
 - Never run load, stress, or chaos actions (killing processes, injecting network
   faults, hitting external URLs) against anything that isn't a disposable local/CI
   environment without explicit user confirmation first.
