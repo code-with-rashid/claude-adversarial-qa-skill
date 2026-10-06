@@ -1,8 +1,9 @@
 ---
 name: adversarial-qa
 description: Use when asked to run adversarial QA, harden or bulletproof an application, drive test coverage/mutation score to a target threshold, run coverage-guided fuzzing or property-based testing to convergence, perform load/stress/soak testing against SLOs, or resume a previous QA hardening run. Builds an exhaustive code-derived test inventory, then loops coverage → mutation testing → fuzzing → chaos/load until objective, measured convergence criteria are met — persisting all state (qa/INVENTORY.md, COVERAGE.json, TRIED.jsonl, QA_LOG.md, SEEDS.json, qa/corpus/) so re-runs resume and compound instead of repeating work.
-version: 1.0.0
 license: MIT
+metadata:
+  version: "1.0.1"
 ---
 
 # Adversarial QA — Convergence-Driven Hardening

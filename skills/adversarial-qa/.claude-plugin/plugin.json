@@ -1,7 +1,7 @@
 {
   "name": "adversarial-qa",
   "description": "Drives a repo to measured, resumable test-hardening convergence: coverage, mutation score, fuzzing, and load/soak testing to explicit thresholds.",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "license": "MIT",
   "author": { "name": "Rashid Mahmood" },
   "homepage": "https://github.com/code-with-rashid/claude-adversarial-qa-skill",
