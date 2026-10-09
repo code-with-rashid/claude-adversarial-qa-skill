@@ -3,7 +3,7 @@ name: adversarial-qa
 description: Use when asked to run adversarial QA, harden or bulletproof an application, drive test coverage/mutation score to a target threshold, run coverage-guided fuzzing or property-based testing to convergence, perform load/stress/soak testing against SLOs, or resume a previous QA hardening run. Builds an exhaustive code-derived test inventory, then loops coverage → mutation testing → fuzzing → chaos/load until objective, measured convergence criteria are met — persisting all state (qa/INVENTORY.md, COVERAGE.json, TRIED.jsonl, QA_LOG.md, SEEDS.json, qa/corpus/) so re-runs resume and compound instead of repeating work.
 license: MIT
 metadata:
-  version: "1.0.1"
+  version: "1.0.2"
 ---
 
 # Adversarial QA — Convergence-Driven Hardening
@@ -175,7 +175,7 @@ mutation score) and say so explicitly in `qa/QA_LOG.md`.
 | `package.json` (Node/TS) | `jest --coverage` / `vitest --coverage` / `nyc` | Stryker Mutator | `fast-check` (property), `jazzer.js` (fuzz) | k6, autocannon, Artillery |
 | `pyproject.toml` / `requirements.txt` (Python) | `pytest --cov` | `mutmut`, `cosmic-ray` | Hypothesis (property), `atheris` (fuzz) | Locust |
 | `Cargo.toml` (Rust) | `cargo tarpaulin` / `cargo llvm-cov` | `cargo-mutants` | `proptest`, `cargo-fuzz` | `goose`, `drill` |
-| `go.mod` (Go) | `go test -cover` | `go-mutesting` | native `go test -fuzz`, `gopter` | `vegeta`, k6 |
+| `go.mod` (Go) | `go test -cover` | `gremlins` (`gremlins unleash`), or the maintained `avito-tech/go-mutesting` fork (the original `zimmski/go-mutesting` is unmaintained) | native `go test -fuzz`, `gopter` | `vegeta`, k6 |
 | `pom.xml` / `build.gradle` (Java/Kotlin) | JaCoCo | PIT | `jqwik`, `jazzer` | Gatling |
 | `*.csproj` (.NET) | `dotnet test --collect:"XPlat Code Coverage"` | Stryker.NET | FsCheck | NBomber |
 
